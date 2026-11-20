@@ -7,12 +7,12 @@
     "build": "next build",
     "start": "HOSTNAME=0.0.0.0 PORT=${PORT:-3000} node .next/standalone/server.js",
     "lint": "eslint ."
-    
   },
   "dependencies": {
     "@ckeditor/ckeditor5-react": "^11.2.0",
     "@hookform/resolvers": "^5.9.1",
     "@marsidev/react-turnstile": "^1.6.1",
+    "@swc/helpers": "^0.5.24",
     "@tanstack/react-table": "^8.21.3",
     "ckeditor5": "^48.5.2",
     "class-variance-authority": "^0.7.1",
