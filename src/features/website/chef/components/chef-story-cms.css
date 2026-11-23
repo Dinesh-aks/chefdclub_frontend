@@ -1,0 +1,29 @@
+/**
+ * About Us lede on /chef — subsection scale (smaller than page hero).
+ * Only the first CMS heading; body h2/h3 keep default .cms-html styles.
+ */
+.chef-story-cms.cms-html > :is(h1, h2):first-of-type {
+  margin-block: 0 1.25rem;
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  line-height: 1.2;
+  font-weight: 400;
+  color: var(--foreground);
+  text-wrap: pretty;
+}
+
+.chef-story-cms.cms-html > :is(h1, h2):first-of-type :is(i, em) {
+  font-style: italic;
+}
+
+@media (min-width: 640px) {
+  .chef-story-cms.cms-html > :is(h1, h2):first-of-type {
+    font-size: 1.875rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .chef-story-cms.cms-html > :is(h1, h2):first-of-type {
+    font-size: 3rem;
+  }
+}
