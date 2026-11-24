@@ -13,18 +13,36 @@ interface CmsPageViewProps {
   slug: PageSlug;
 }
 
-export async function CmsPageView({ slug }: CmsPageViewProps) {
-  const config = getCmsPageSiteConfig(slug);
-
-  let page;
+async function loadCmsPage(slug: PageSlug) {
   try {
-    const response = await fetchPublicPage(slug);
-    page = response.data;
+    return (await fetchPublicPage(slug)).data;
   } catch (error) {
     if (error instanceof ApiError && error.status === 404) {
       notFound();
     }
-    throw error;
+    return null;
+  }
+}
+
+export async function CmsPageView({ slug }: CmsPageViewProps) {
+  const config = getCmsPageSiteConfig(slug);
+  const page = await loadCmsPage(slug);
+
+  if (!page) {
+    return (
+      <>
+        <PageHero eyebrow={config.label} descriptionClassName="max-w-3xl">
+          {config.label}
+        </PageHero>
+        <Section tone="default" padding="afterHero">
+          <Reveal className="mx-auto max-w-3xl">
+            <p className="text-muted-foreground">
+              This page is temporarily unavailable. Please try again shortly.
+            </p>
+          </Reveal>
+        </Section>
+      </>
+    );
   }
 
   const title = page.title?.trim() || config.label;

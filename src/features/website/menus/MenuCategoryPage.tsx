@@ -17,7 +17,7 @@ import {
   parseMenuType,
 } from "@/features/website/menus/data";
 
-// A missing or inactive category is a 404; any other error is a real failure and should surface.
+// A missing or inactive category is a 404; other failures degrade so prerender still succeeds.
 async function loadCategory(
   slug: string,
   type: PublicMenuTypeSlug | undefined,
@@ -30,7 +30,15 @@ async function loadCategory(
     if (error instanceof ApiError && error.status === 404) {
       notFound();
     }
-    throw error;
+    return null;
+  }
+}
+
+async function loadMenuTabs() {
+  try {
+    return (await fetchPublicMenuTabs()).data;
+  } catch {
+    return [];
   }
 }
 
@@ -43,14 +51,18 @@ export async function MenuCategoryPage({ params, searchParams }: PageProps<"/men
   const query = await searchParams;
   const type = parseMenuType(query.type);
   const pages = parseMenuPages(query);
-  const [category, tabs] = await Promise.all([loadCategory(slug, type, pages), fetchPublicMenuTabs()]);
+  const [category, tabs] = await Promise.all([loadCategory(slug, type, pages), loadMenuTabs()]);
 
   return (
     <>
       <MenusHero />
       <Section tone="default" padding="afterHero">
-        <MenuTabs tabs={tabs.data} activeSlug={slug} />
-        <MenuCategorySection category={category} type={type} />
+        <MenuTabs tabs={tabs} activeSlug={slug} />
+        {category ? (
+          <MenuCategorySection category={category} type={type} />
+        ) : (
+          <p className="mt-10 text-center text-muted-foreground">Menus are unavailable right now.</p>
+        )}
       </Section>
       <MenusCta />
     </>
