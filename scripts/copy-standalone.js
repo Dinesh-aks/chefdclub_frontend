@@ -37,4 +37,17 @@ copyDirectory(
   path.join(standaloneDir, "public")
 );
 
+const godaddyEnvSrc = path.join("scripts", "godaddy-env.js");
+const godaddyEnvDest = path.join(standaloneDir, "godaddy-env.js");
+fs.copyFileSync(godaddyEnvSrc, godaddyEnvDest);
+
+const pkgPath = path.join(standaloneDir, "package.json");
+const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf8"));
+pkg.engines = { ...pkg.engines, node: ">=20" };
+pkg.scripts = {
+  build: "echo build",
+  start: "node -r ./godaddy-env.js server.js",
+};
+fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2));
+
 console.log("Standalone build prepared successfully!");

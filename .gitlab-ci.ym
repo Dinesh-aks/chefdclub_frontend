@@ -14,33 +14,8 @@ build_frontend:
   script:
     - npm ci
 
-    # Build Next.js
+    # Build Next.js (copy-standalone.js configures godaddy-env + start for the zip)
     - npm run build
-
-    # Configure GoDaddy standalone package
-    - |
-      node -e '
-        const fs = require("fs");
-        const file = ".next/standalone/package.json";
-        const pkg = JSON.parse(fs.readFileSync(file, "utf8"));
-
-        pkg.engines = { ...pkg.engines, node: "22.x" };
-        fs.writeFileSync(
-          ".next/standalone/godaddy-env.js",
-          [
-            'process.env.HOSTNAME = process.env.HOSTNAME || "0.0.0.0";',
-            "if (!process.env.PORT) {",
-            '  process.env.PORT = "3000";',
-            "}",
-          ].join("\n"),
-        );
-        pkg.scripts = {
-          build: "echo build",
-          start: "node -r ./godaddy-env.js server.js",
-        };
-
-        fs.writeFileSync(file, JSON.stringify(pkg, null, 2));
-      '
 
     # Create deployment ZIP
     - cd .next/standalone
