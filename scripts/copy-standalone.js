@@ -37,11 +37,10 @@ copyDirectory(
   path.join(standaloneDir, "public")
 );
 
+// GoDaddy dependency checks expect next/dist/pages/_error in standalone node_modules.
 const nextPagesSrc = path.join("node_modules", "next", "dist", "pages");
 const nextPagesDest = path.join(standaloneDir, "node_modules", "next", "dist", "pages");
-if (!fs.existsSync(path.join(nextPagesDest, "_error.js"))) {
-  copyDirectory(nextPagesSrc, nextPagesDest);
-}
+copyDirectory(nextPagesSrc, nextPagesDest);
 
 const godaddyEnvSrc = path.join("scripts", "godaddy-env.js");
 const godaddyEnvDest = path.join(standaloneDir, "godaddy-env.js");
@@ -56,4 +55,4 @@ pkg.scripts = {
 };
 fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2));
 
-console.log("Standalone build prepared successfully!");
+require("./verify-standalone.js");

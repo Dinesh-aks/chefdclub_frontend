@@ -1,5 +1,5 @@
 {
   "build_command": "npm ci && npm run build",
   "start_command": "npm run start",
-  "notes": "Do not use npm run dev on the host. Set env vars (NEXT_PUBLIC_API_URL, etc.) in the panel. The platform PORT is used automatically."
+  "notes": "GitHub connect deploy only. Do not use npm run dev. Set NEXT_PUBLIC_API_URL and NODE_ENV=production in Secrets. Do not set PORT=3002 — use the platform PORT."
 }
