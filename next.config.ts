@@ -5,6 +5,14 @@ const API_ORIGIN = (process.env.NEXT_PUBLIC_API_URL ?? "").replace(/\/api\/?$/, 
 
 const nextConfig: NextConfig = {
   output: "standalone",
+  // App Router standalone traces can omit legacy pages/*; hosts still require _error at runtime.
+  outputFileTracingIncludes: {
+    "/*": [
+      "./node_modules/next/dist/pages/_error.js",
+      "./node_modules/next/dist/pages/_document.js",
+      "./node_modules/next/dist/pages/_app.js",
+    ],
+  },
   // Dev only: prints server-side fetches (Server Components) in the `next dev` terminal with their
   // full URL, since they never appear in the browser's Network tab.
   logging: { fetches: { fullUrl: true } },

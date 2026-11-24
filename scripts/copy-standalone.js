@@ -37,6 +37,12 @@ copyDirectory(
   path.join(standaloneDir, "public")
 );
 
+const nextPagesSrc = path.join("node_modules", "next", "dist", "pages");
+const nextPagesDest = path.join(standaloneDir, "node_modules", "next", "dist", "pages");
+if (!fs.existsSync(path.join(nextPagesDest, "_error.js"))) {
+  copyDirectory(nextPagesSrc, nextPagesDest);
+}
+
 const godaddyEnvSrc = path.join("scripts", "godaddy-env.js");
 const godaddyEnvDest = path.join(standaloneDir, "godaddy-env.js");
 fs.copyFileSync(godaddyEnvSrc, godaddyEnvDest);
