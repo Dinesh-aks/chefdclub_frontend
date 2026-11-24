@@ -1,0 +1,5 @@
+{
+  "build_command": "npm ci && npm run build",
+  "start_command": "npm run start",
+  "notes": "Do not use npm run dev on the host. Set env vars (NEXT_PUBLIC_API_URL, etc.) in the panel. The platform PORT is used automatically."
+}
